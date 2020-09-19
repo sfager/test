@@ -1,0 +1,16 @@
+sudo: required
+services:
+    - docker
+
+script:
+    - docker build -t sfager/node .
+    - docker images sfager/node
+
+before_deploy:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+deploy:
+    provider: script
+    script: docker push sfager/node
+    on:
+        branch: master
